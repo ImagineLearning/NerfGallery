@@ -52,29 +52,27 @@ namespace NerfTargets
 
 		private void GameThread()
 		{
-			Countdown(TimeSpan.FromSeconds(5));
+			ClientCommunication.Instance.LevelStart("part1");
+			Countdown(TimeSpan.FromSeconds(3));
 			PlayGame();
 			GameOver();
 		}
 
 		private void GameOver()
 		{
-			ClientCommunication.Instance.LevelEnd();
+			ClientCommunication.Instance.LevelEnd("part1");
 			ClientCommunication.Instance.HideAllTargets();
 			ClientCommunication.Instance.GameOver(hits);
 		}
 
 		private void PlayGame()
 		{
-			ClientCommunication.Instance.LevelStart("intro");
-			int currentTargetNum = 0;
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
 			foreach(var targetId in targetIds)
 			{
 				ClientCommunication.Instance.ShowTargetByTargetNum(targetId);
 
 				Thread.Sleep(TimeSpan.FromSeconds(7));
-				currentTargetNum++;
 			}
 		}
 

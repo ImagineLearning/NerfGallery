@@ -66,7 +66,7 @@ namespace LightController
 						RecordHit(lights, t);
 				});
 				targetProxy.On<string>("LevelStart", LevelStart);
-
+				targetProxy.On<string>("LevelEnd", LevelEnd);
 
 				var allLights = Enumerable.Range(1, 10).Select(t => t.ToString()).ToList();
 
@@ -85,23 +85,42 @@ namespace LightController
 						RecordHit(lights, id);
 					}
 
-					if (command.StartsWith("level"))
+					if (command.StartsWith("start"))
 					{
-						var id = command.Substring("level".Length + 1);
+						var id = command.Substring("start".Length + 1);
+						LevelStart(id);
+					}
+
+					if (command.StartsWith("end"))
+					{
+						var id = command.Substring("end".Length + 1);
 						LevelStart(id);
 					}
 				}
 			}
 		}
 
+		private static void LevelEnd(string level)
+		{
+			PlayAudio(@"..\..\music\" + level + "_outro.wav");
+		}
+
+		private static void PlayAudio(string file)
+		{
+			var p1 = new System.Windows.Media.MediaPlayer();
+			p1.Open(new System.Uri(file));
+			p1.Play();
+		}
+
 		private static void LevelStart(string level)
 		{
-			(new SoundPlayer(@"music\" + level + ".wav")).Play();
+			PlayAudio(@"..\..\music\" + level + "_into.wav");
 		}
 
 		private static void RecordHit(LightBoard lights, string id)
 		{
-			(new SoundPlayer(@"sounds\hit.wav")).Play();
+			PlayAudio(@"..\..\sounds\hit.mp3");
+
 			var channels = GetChannelsForTarget(id);
 
 			for (int i = 0; i < 3; ++i)

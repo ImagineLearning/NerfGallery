@@ -132,9 +132,9 @@ namespace NerfTargets.Hubs
 			_targetHub.Clients.All.levelStart(name);
 		}
 
-		public void LevelEnd()
+		public void LevelEnd(string name)
 		{
-			_targetHub.Clients.All.levelEnd();
+			_targetHub.Clients.All.levelEnd(name);
 		}
 
 	}
