@@ -37,7 +37,7 @@
 			$('#debug').text($('#debug').text() + text);
 		}
 
-		$(function() {
+		$(function () {
 			clientId = parseInt(getParameterByName('t'));
 			debug('client id: ' + clientId);
 			debug('sensitivity: ' + sensitivity);
@@ -46,17 +46,17 @@
 			// Reference the auto-generated proxy for the hub.
 			hub = $.connection.targetHub;
 			// Create a function that the hub can call back to display messages.
-			hub.client.showText = function(text) {
+			hub.client.showText = function (text) {
 				// Add the message to the page.
 				$('#text').text(text);
 			};
 
-			hub.client.gameOver = function(points) {
+			hub.client.gameOver = function (points) {
 				$('#gameOver').removeClass('hidden');
 				debug('game over. Points: ' + points);
 			}
 
-			hub.client.showTarget = function(idNum) {
+			hub.client.showTarget = function (idNum) {
 				if (idNum === clientId) {
 					//$('#text').text('Hit Me');
 					$('#target').removeClass('hidden');
@@ -64,7 +64,7 @@
 				}
 			}
 
-			hub.client.hideTarget = function(idNum) {
+			hub.client.hideTarget = function (idNum) {
 				if (idNum === clientId) {
 					//$('#text').text('');
 					if ($('#target').hasClass('selected')) {
@@ -75,28 +75,28 @@
 				}
 			}
 
-			$.connection.hub.start().done(function() {
+			$.connection.hub.start().done(function () {
 				hub.server.setClientId(clientId);
 			});
 
 			function startTimer() {
 				$('#ready').text("Not Ready");
-				timer = setTimeout(function() { canSendHit = true; $('#ready').text("Ready");}, quietTime);
+				timer = setTimeout(function () { canSendHit = true; $('#ready').text("Ready"); }, quietTime);
 			}
 
 			startTimer();
 
-			window.tabletHit = function() {
- 				if (canSendHit) {
-				if (typeof hub !== 'undefined') {
-					var goodHit = !$('#target').hasClass('hidden');
-					$('#target').addClass('selected');
-					
-					hub.server.recordHit(goodHit);
-					canSendHit = false;
+			window.tabletHit = function () {
+				if (canSendHit) {
+					if (typeof hub !== 'undefined') {
+						var goodHit = !$('#target').hasClass('hidden');
+						$('#target').addClass('selected');
+
+						hub.server.recordHit(goodHit);
+						canSendHit = false;
 						startTimer();
-					debug('sent hit ' + (goodHit ? '[good]' : '[bad]'));
-				}
+						debug('sent hit ' + (goodHit ? '[good]' : '[bad]'));
+					}
 				} else {
 					clearTimeout(timer);
 					startTimer();
@@ -105,7 +105,7 @@
 
 
 			if (window.DeviceMotionEvent != undefined) {
-				window.ondevicemotion = function(e) {
+				window.ondevicemotion = function (e) {
 
 					if (e.rotationRate) {
 						var alpha = e.rotationRate.alpha;
