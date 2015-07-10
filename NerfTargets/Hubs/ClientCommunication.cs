@@ -12,7 +12,9 @@ namespace NerfTargets.Hubs
 		private readonly IHubContext _targetHub;
 		private readonly Random _random = new Random();
 		private readonly List<string> _clients = new List<string>();
-		private readonly Dictionary<int, string> _clientsByClientId = new Dictionary<int, string>();
+		private readonly Dictionary<string, int> _clientsNumbersByConnectionIds = new Dictionary<string, int>();
+		private readonly HashSet<string> _clientsShowingTarget = new HashSet<string>();
+
 
 		public event EventHandler GoodHit = (sender, args) => { };
 		public event EventHandler BadHit = (sender, args) => { };
@@ -33,7 +35,6 @@ namespace NerfTargets.Hubs
 			_targetHub.Clients.All.showText(text);
 		}
 
-		private readonly HashSet<string> _clientsShowingTarget = new HashSet<string>();
 
 		public void ShowRandomTarget(int delay)
 		{
@@ -66,10 +67,9 @@ namespace NerfTargets.Hubs
 			_clients.Remove(connectionId);
 		}
 
-		public void SetClientId(string connectionId, string clientId)
+		public void SetClientId(string connectionId, int targetNumber)
 		{
-			int id = int.Parse(clientId);
-			_clientsByClientId.Add(id, connectionId);
+			_clientsNumbersByConnectionIds.Add(connectionId, targetNumber);
 		}
 
 		public void RecordHit(string connectionId, bool good)
@@ -89,13 +89,13 @@ namespace NerfTargets.Hubs
 		private void ShowTarget(string clientId)
 		{
 			_clientsShowingTarget.Add(clientId);
-			_targetHub.Clients.Client(clientId).showTarget();
+			_targetHub.Clients.All.showTarget(_clientsNumbersByConnectionIds[clientId]);
 		}
 
 		private void HideTarget(string clientId)
 		{
 			_clientsShowingTarget.Remove(clientId);
-			_targetHub.Clients.Client(clientId).hideTarget();
+			_targetHub.Clients.All.hideTarget(_clientsNumbersByConnectionIds[clientId]);
 		}
 	}
 }

@@ -27,8 +27,8 @@
 			$('#debug').text($('#debug').text() + text);
 		}
 
-		$(function () {
-			clientId = getParameterByName('t');
+		$(function() {
+			clientId = parseInt(getParameterByName('t'));
 			debug('client id: ' + clientId);
 			// Reference the auto-generated proxy for the hub.
 			hub = $.connection.targetHub;
@@ -38,12 +38,16 @@
 				$('#text').text(text);
 			};
 
-			hub.client.showTarget = function() {
-				$('#text').text('Hit Me');
+			hub.client.showTarget = function(idNum) {
+				if (idNum === clientId) {
+					$('#text').text('Hit Me');
+				}
 			}
 
-			hub.client.hideTarget = function() {
-				$('#text').text('');
+			hub.client.hideTarget = function(idNum) {
+				if (idNum === clientId) {
+					$('#text').text('');
+				}
 			}
 
 			$.connection.hub.start().done(function() {
@@ -55,15 +59,14 @@
 					var goodHit = $('#text').text() == 'Hit Me';
 					hub.server.recordHit(goodHit);
 					canSendHit = false;
-					setTimeout(function () { canSendHit = true; }, 5000);
-					debug( 'sent hit ' + (goodHit ? '[good]' : '[bad]'));
+					setTimeout(function() { canSendHit = true; }, 5000);
+					debug('sent hit ' + (goodHit ? '[good]' : '[bad]'));
 				}
 			}
 
-			
 
 			if (window.DeviceMotionEvent != undefined) {
-				window.ondevicemotion = function (e) {
+				window.ondevicemotion = function(e) {
 
 					if (e.rotationRate) {
 						var alpha = e.rotationRate.alpha;
@@ -79,6 +82,6 @@
 			}
 		});
 
-		
+
 	</script>
 }
