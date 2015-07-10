@@ -34,6 +34,8 @@ BODY {
 	-webkit-text-size-adjust: 100%;
 	/*/// Workaround for Mobile Chrome Bug caused by auto "font boosting." https://bugs.webkit.org/show_bug.cgi?id=84186 \\\*/
 	max-height: 999999px;
+	background-color: black;
+	color: white;
 }
 
 #target {
