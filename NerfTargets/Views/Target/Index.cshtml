@@ -58,8 +58,11 @@
 				debug('game over. Points: ' + points);
 			}
 
-			hub.client.restartGame = function(targetClass) {
+			hub.client.restartGame = function() {
 				$('#gameOver').addClass('hidden');
+			}
+
+			hub.client.levelStart = function(targetClass) {
 				$('#target').removeClass(targetClassName);
 				targetClassName = targetClass;
 				$('#target').addClass(targetClassName);

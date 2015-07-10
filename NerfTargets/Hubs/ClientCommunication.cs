@@ -22,7 +22,6 @@ namespace NerfTargets.Hubs
 		public ClientCommunication()
 		{
 			_targetHub = GlobalHost.ConnectionManager.GetHubContext<TargetHub>();
-
 		}
 
 		public static ClientCommunication Instance
@@ -30,9 +29,9 @@ namespace NerfTargets.Hubs
 			get { return _instance.Value; }
 		}
 
-		public void RestartGame(string targetType)
+		public void RestartGame()
 		{
-			_targetHub.Clients.All.restartGame(targetType);
+			_targetHub.Clients.All.restartGame();
 		}
 
 		public void GameOver(int points)
