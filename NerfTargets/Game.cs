@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
@@ -59,8 +60,8 @@ namespace NerfTargets
 
 		private void GameThread()
 		{
-			Countdown(TimeSpan.FromSeconds(5));
-			PlayGame();
+			Part1();
+			Part2();
 			GameOver();
 		}
 
@@ -73,19 +74,56 @@ namespace NerfTargets
 
 
 
-		private void PlayGame()
+		private void Part1()
 		{
 			var levelName = "part1";
 			ClientCommunication.Instance.RestartGame(TargetsForLevel[levelName]);
 			ClientCommunication.Instance.LevelStart(levelName);
-			int currentTargetNum = 0;
+			Thread.Sleep(TimeSpan.FromSeconds(6));
+			Countdown(TimeSpan.FromSeconds(5));
+			
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
 			foreach(var targetId in targetIds)
 			{
 				ClientCommunication.Instance.ShowTargetByTargetNum(targetId);
-
-				Thread.Sleep(TimeSpan.FromSeconds(7));
 			}
+
+			while (hits < targetIds.Count)
+			{
+				Thread.Sleep(100);
+			}
+
+			ClientCommunication.Instance.LevelEnd(levelName);
+		}
+
+		private void Part2()
+		{
+			var levelName = "part2";
+			ClientCommunication.Instance.RestartGame(TargetsForLevel[levelName]);
+			ClientCommunication.Instance.LevelStart(levelName);
+			Countdown(TimeSpan.FromSeconds(5));
+			Thread.Sleep(TimeSpan.FromSeconds(6));
+			int currentTargetNum = 0;
+			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
+			foreach (var targetId in targetIds.Take(2))
+			{
+				ClientCommunication.Instance.ShowTargetByTargetNum(targetId);
+			}
+
+			Thread.Sleep(TimeSpan.FromSeconds(10));
+			ClientCommunication.Instance.HideAllTargets();
+
+			foreach (var targetId in targetIds.Skip(2).Take(3))
+			{
+				ClientCommunication.Instance.ShowTargetByTargetNum(targetId);
+			}
+
+			Thread.Sleep(TimeSpan.FromSeconds(10));
+			ClientCommunication.Instance.HideAllTargets();
+
+			
+
+			ClientCommunication.Instance.LevelEnd(levelName);
 		}
 
 		private static void Countdown(TimeSpan time)
