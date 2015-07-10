@@ -62,11 +62,14 @@ BODY {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	background-image: url("../Content/images/target_archery.png");
 }
 
 #target.chain {
 	background-image: url("../Content/images/chain.jpg");
+}
+
+#target.chain.selected {
+	background-image: url("../Content/images/chain_broken.jpg");
 }
 
 #target.asteroid {

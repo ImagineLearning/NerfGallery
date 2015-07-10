@@ -22,7 +22,6 @@ namespace NerfTargets.Hubs
 		public ClientCommunication()
 		{
 			_targetHub = GlobalHost.ConnectionManager.GetHubContext<TargetHub>();
-
 		}
 
 		public static ClientCommunication Instance
