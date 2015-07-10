@@ -97,7 +97,7 @@ namespace NerfTargets
 			ClientCommunication.Instance.LevelStart(levelName);
 			Thread.Sleep(TimeSpan.FromSeconds(4));
 			Countdown(TimeSpan.FromSeconds(3));
-			int currentTargetNum = 0;
+
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
 			foreach (var targetId in targetIds.Take(2))
 			{
@@ -112,7 +112,6 @@ namespace NerfTargets
 			{
 				ClientCommunication.Instance.ShowTargetByTargetNum(targetId, TimeSpan.FromSeconds(10));
 				Thread.Sleep(1000);
-
 			}
 
 			Thread.Sleep(TimeSpan.FromSeconds(10));
