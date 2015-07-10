@@ -46,11 +46,12 @@
 			// Reference the auto-generated proxy for the hub.
 			hub = $.connection.targetHub;
 			// Create a function that the hub can call back to display messages.
-			hub.client.showText = function (text) {
+			hub.client.showCountdown = function(text) {
 				// Add the message to the page.
 				$('#text').text(text);
 			};
 
+			// Create a function that the hub can call back to display messages.
 			hub.client.gameOver = function (points) {
 				$('#gameOver').removeClass('hidden');
 				debug('game over. Points: ' + points);
