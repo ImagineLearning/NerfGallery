@@ -23,6 +23,7 @@
 		var canSendHit = false;
 		var clientId;
 		var timer;
+		var targetClassName = 'default';
 		var sensitivity = getParameterByName("s") || 1;
 		var quietTime = getParameterByName("q") || 1000;
 
@@ -57,9 +58,12 @@
 				debug('game over. Points: ' + points);
 			}
 
-			hub.client.restartGame = function() {
+			hub.client.restartGame = function(targetClass) {
 				$('#gameOver').addClass('hidden');
-				debug('game restarted');
+				$('#target').removeClass(targetClassName);
+				targetClassName = targetClass;
+				$('#target').addClass(targetClassName);
+				debug('game restarted with new target class: ' + targetClassName);
 			}
 
 			hub.client.showTarget = function (idNum) {

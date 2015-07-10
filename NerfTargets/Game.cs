@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
@@ -11,6 +12,12 @@ namespace NerfTargets
 	{
 		readonly static Lazy<Game> _instance = new Lazy<Game>(() => new Game());
 		private IHubContext _scoreHub;
+
+		private static readonly Dictionary<string, string> TargetsForLevel = new Dictionary<string, string>()
+		{
+			{"part1", "chain"},
+			{"part2", "asteroid"}
+		}; 
 
 		public int hits = 0;
 		public int misses = 0;
@@ -52,7 +59,6 @@ namespace NerfTargets
 
 		private void GameThread()
 		{
-			ClientCommunication.Instance.RestartGame();
 			Countdown(TimeSpan.FromSeconds(5));
 			PlayGame();
 			GameOver();
@@ -65,9 +71,13 @@ namespace NerfTargets
 			ClientCommunication.Instance.GameOver(hits);
 		}
 
+
+
 		private void PlayGame()
 		{
-			ClientCommunication.Instance.LevelStart("intro");
+			var levelName = "part1";
+			ClientCommunication.Instance.RestartGame(TargetsForLevel[levelName]);
+			ClientCommunication.Instance.LevelStart(levelName);
 			int currentTargetNum = 0;
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
 			foreach(var targetId in targetIds)
