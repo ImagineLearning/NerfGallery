@@ -51,17 +51,20 @@ namespace NerfTargets.Hubs
 			return ids;
 		}
 
-		public void ShowTargetByTargetNum(int targetNum, int delaySeconds = 5)
+		public void ShowTargetByTargetNum(int targetNum, TimeSpan? delay = null)
 		{
 			var idKvp = _clientsNumbersByConnectionIds.FirstOrDefault(c => c.Value == targetNum);
 			if (!string.IsNullOrEmpty(idKvp.Key))
 			{
 				ShowTarget(idKvp.Key);
-				var timer = new Timer();
-				timer.Elapsed += (sender, args) => HideTarget(idKvp.Key);
-				timer.Interval = delaySeconds * 1000;
-				timer.AutoReset = false;
-				timer.Start();
+				if (delay.HasValue)
+				{
+					var timer = new Timer();
+					timer.Elapsed += (sender, args) => HideTarget(idKvp.Key);
+					timer.Interval = delay.Value.Milliseconds;
+					timer.AutoReset = false;
+					timer.Start();
+				}
 			}
 		}
 

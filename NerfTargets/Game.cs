@@ -21,7 +21,6 @@ namespace NerfTargets
 			ClientCommunication.Instance.GoodHit += (sender, args) =>
 			{
 				hits++;
-				ShowNewTarget();
 				UpdateScores();
 			};
 
@@ -102,7 +101,8 @@ namespace NerfTargets
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
 			foreach (var targetId in targetIds.Take(2))
 			{
-				ClientCommunication.Instance.ShowTargetByTargetNum(targetId);
+				ClientCommunication.Instance.ShowTargetByTargetNum(targetId, TimeSpan.FromSeconds(10));
+				Thread.Sleep(1000);
 			}
 
 			Thread.Sleep(TimeSpan.FromSeconds(10));
@@ -110,13 +110,13 @@ namespace NerfTargets
 
 			foreach (var targetId in targetIds.Skip(2).Take(3))
 			{
-				ClientCommunication.Instance.ShowTargetByTargetNum(targetId);
+				ClientCommunication.Instance.ShowTargetByTargetNum(targetId, TimeSpan.FromSeconds(10));
+				Thread.Sleep(1000);
+
 			}
 
 			Thread.Sleep(TimeSpan.FromSeconds(10));
 			ClientCommunication.Instance.HideAllTargets();
-
-			
 
 			ClientCommunication.Instance.LevelEnd(levelName);
 			Thread.Sleep(TimeSpan.FromSeconds(17));
