@@ -30,6 +30,11 @@ namespace NerfTargets.Hubs
 			get { return _instance.Value; }
 		}
 
+		public void RestartGame()
+		{
+			_targetHub.Clients.All.restartGame();
+		}
+
 		public void GameOver(int points)
 		{
 			_targetHub.Clients.All.gameOver(points);

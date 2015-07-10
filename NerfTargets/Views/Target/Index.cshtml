@@ -56,6 +56,11 @@
 				debug('game over. Points: ' + points);
 			}
 
+			hub.client.restartGame = function() {
+				$('#gameOver').addClass('hidden');
+				debug('game restarted');
+			}
+
 			hub.client.showTarget = function (idNum) {
 				if (idNum === clientId) {
 					//$('#text').text('Hit Me');
