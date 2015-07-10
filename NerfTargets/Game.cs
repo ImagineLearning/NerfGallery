@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR;
 using NerfTargets.Hubs;
 using Timer = System.Timers.Timer;
 
@@ -9,10 +10,30 @@ namespace NerfTargets
 	public class Game
 	{
 		readonly static Lazy<Game> _instance = new Lazy<Game>(() => new Game());
+		private IHubContext _scoreHub;
 
+		public int hits = 0;
+		public int misses = 0;
 		public Game()
 		{
-			ClientCommunication.Instance.GoodHit += (sender, args) => ShowNewTarget();
+			ClientCommunication.Instance.GoodHit += (sender, args) =>
+			{
+				hits++;
+				ShowNewTarget();
+				UpdateScores();
+			};
+
+			ClientCommunication.Instance.BadHit += (sender, args) =>
+			{
+				misses++;
+				UpdateScores();
+			};
+			_scoreHub = GlobalHost.ConnectionManager.GetHubContext<ScoreHub>();
+		}
+
+		private void UpdateScores()
+		{
+			_scoreHub.Clients.All.updateScores(hits, misses);
 		}
 
 		private void ShowNewTarget()
@@ -22,6 +43,10 @@ namespace NerfTargets
 
 		public void Start()
 		{
+			hits = 0;
+			misses = 0;
+			UpdateScores();
+
 			Task.Run(() => GameThread());
 		}
 
