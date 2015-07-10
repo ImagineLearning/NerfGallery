@@ -76,6 +76,10 @@ BODY {
 	background-image: url("../Content/images/asteroid.jpg");
 }
 
+#target.part2.selected {
+	background-image: url("../Content/images/asteroid_exploded.jpg");
+}
+
 .hidden {
 	background-color: transparent;
 	-webkit-transition: background-color .5s ease;
