@@ -4,6 +4,7 @@
 </div>
 
 <div id="text" style="font-size: 300px; text-align: center"></div>
+<div id="ready">Ready</div>
 <div id="debug"></div>
 
 
@@ -18,8 +19,11 @@
 	<!--SignalR script to update the chat page and send messages.-->
 	<script>
 		var hub;
-		var canSendHit = true;
+		var canSendHit = false;
 		var clientId;
+		var timer;
+		var sensitivity = getParameterByName("s") || 1;
+		var quietTime = getParameterByName("q") || 1000;
 
 		function getParameterByName(name) {
 			name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -35,6 +39,9 @@
 		$(function() {
 			clientId = parseInt(getParameterByName('t'));
 			debug('client id: ' + clientId);
+			debug('sensitivity: ' + sensitivity);
+			debug('quiet time: ' + quietTime);
+
 			// Reference the auto-generated proxy for the hub.
 			hub = $.connection.targetHub;
 			// Create a function that the hub can call back to display messages.
@@ -66,15 +73,27 @@
 				hub.server.setClientId(clientId);
 			});
 
+			function startTimer() {
+				$('#ready').text("Not Ready");
+				timer = setTimeout(function() { canSendHit = true; $('#ready').text("Ready");}, quietTime);
+			}
+
+			startTimer();
+
 			window.tabletHit = function() {
-				if (typeof hub !== 'undefined' && canSendHit) {
+ 				if (canSendHit) {
+				if (typeof hub !== 'undefined') {
 					var goodHit = !$('#target').hasClass('hidden');
 					$('#target').addClass('selected');
 					
 					hub.server.recordHit(goodHit);
 					canSendHit = false;
-					setTimeout(function() { canSendHit = true; }, 5000);
+						startTimer();
 					debug('sent hit ' + (goodHit ? '[good]' : '[bad]'));
+				}
+				} else {
+					clearTimeout(timer);
+					startTimer();
 				}
 			}
 
@@ -87,7 +106,7 @@
 						var beta = e.rotationRate.beta;
 						var gamma = e.rotationRate.gamma;
 
-						if (Math.abs(alpha) > 1 || Math.abs(beta) > 1 || Math.abs(gamma) > 1) {
+						if (Math.abs(alpha) > sensitivity || Math.abs(beta) > sensitivity || Math.abs(gamma) > sensitivity) {
 							tabletHit();
 
 						}
