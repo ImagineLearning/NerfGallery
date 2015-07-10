@@ -95,6 +95,8 @@ namespace NerfTargets.Hubs
 
 		public void RecordHit(string connectionId, bool good)
 		{
+			var targetNumber = _clientsNumbersByConnectionIds[connectionId];
+			_targetHub.Clients.All.RecordHit(targetNumber, good);
 			if (good)
 			{
 				GoodHit(this, EventArgs.Empty);
