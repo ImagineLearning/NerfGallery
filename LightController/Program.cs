@@ -110,9 +110,11 @@ namespace LightController
 		{
 			file = Path.Combine(Environment.CurrentDirectory, file);
 
-			System.Media.SoundPlayer myPlayer = new System.Media.SoundPlayer();
-myPlayer.SoundLocation = file;
-myPlayer.Play();
+//			System.Media.SoundPlayer myPlayer = new System.Media.SoundPlayer();
+//myPlayer.SoundLocation = file;
+//myPlayer.Play();
+			var musicplayer = new MusicPlayer(file);
+			musicplayer.Play(false);
 
 			//file = Path.Combine(Environment.CurrentDirectory, file);
 			//Console.WriteLine("Playing Audio " + file);
