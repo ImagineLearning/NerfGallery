@@ -59,12 +59,14 @@ namespace NerfTargets
 
 		private void GameOver()
 		{
+			ClientCommunication.Instance.LevelEnd();
 			ClientCommunication.Instance.HideAllTargets();
-			ClientCommunication.Instance.ShowText("Game Over");
+			ClientCommunication.Instance.GameOver(hits, misses);
 		}
 
 		private void PlayGame()
 		{
+			ClientCommunication.Instance.LevelStart("intro");
 			int currentTargetNum = 0;
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
 			foreach(var targetId in targetIds)
@@ -84,12 +86,12 @@ namespace NerfTargets
 			{
 				if (countdown <= 0)
 				{
-					ClientCommunication.Instance.ShowText("");
+					ClientCommunication.Instance.ShowCountdown("");
 					timer.Stop();
 				}
 				else
 				{
-					ClientCommunication.Instance.ShowText(countdown.ToString());
+					ClientCommunication.Instance.ShowCountdown(countdown.ToString());
 					countdown--;
 				}
 			};

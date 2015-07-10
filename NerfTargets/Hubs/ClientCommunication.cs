@@ -30,9 +30,9 @@ namespace NerfTargets.Hubs
 			get { return _instance.Value; }
 		}
 
-		public void ShowText(string text)
+		public void ShowCountdown(string text)
 		{
-			_targetHub.Clients.All.showText(text);
+			_targetHub.Clients.All.showCountdown(text);
 		}
 
 		public List<int> GetConnectedTargetIds()
@@ -120,6 +120,21 @@ namespace NerfTargets.Hubs
 		{
 			_clientsShowingTarget.Remove(clientId);
 			_targetHub.Clients.All.hideTarget(_clientsNumbersByConnectionIds[clientId]);
+		}
+
+		public void LevelStart(string name)
+		{
+			_targetHub.Clients.All.levelStart(name);
+		}
+
+		public void LevelEnd()
+		{
+			_targetHub.Clients.All.levelEnd();
+		}
+
+		public void GameOver(int hits, int misses)
+		{
+			_targetHub.Clients.All.gameOver(hits, misses);
 		}
 	}
 }
