@@ -13,7 +13,7 @@ namespace LightController
 	public class LightBoard : IDisposable
 	{
 		private readonly VComWrapper _com;
-		readonly byte[] _levels = new byte[512];
+		public readonly byte[] _levels = new byte[512];
 
 		public LightBoard()
 		{
@@ -30,6 +30,17 @@ namespace LightController
 			{
 				_levels[channel - 1] = level;
 			}
+			_com.sendDMXPacketRequest(_levels);
+		}
+
+		public byte this[int i] {
+			set {
+				_levels[i - 1] = value;
+			}
+		}
+
+
+		public void SetValues() {
 			_com.sendDMXPacketRequest(_levels);
 		}
 
@@ -57,8 +68,13 @@ namespace LightController
 
 			hubConnection.Start();
 
+
 			using (var lights = new LightBoard())
 			{
+				SetGenaralColor(lights, 0, 0, 0);
+
+				//LevelEnd(lights, "2");
+
 				targetProxy.On<string>("ShowTarget", t => ShowTarget(lights, t));
 				targetProxy.On<string>("HideTarget", t => HideTarget(lights, t));
 				targetProxy.On<string, bool>("RecordHit", (t, success) =>
@@ -66,8 +82,8 @@ namespace LightController
 					if (success)
 						RecordHit(lights, t);
 				});
-				targetProxy.On<string>("LevelStart", LevelStart);
-				targetProxy.On<string>("LevelEnd", LevelEnd);
+				targetProxy.On<string>("LevelStart", t => LevelStart(lights, t));
+				targetProxy.On<string>("LevelEnd", t => LevelEnd(lights, t));
 
 				var allLights = Enumerable.Range(1, 10).Select(t => t.ToString()).ToList();
 
@@ -89,22 +105,31 @@ namespace LightController
 					if (command.StartsWith("start"))
 					{
 						var id = command.Substring("start".Length + 1);
-						LevelStart(id);
+						LevelStart(lights, id);
 					}
 
 					if (command.StartsWith("end"))
 					{
 						var id = command.Substring("end".Length + 1);
-						LevelStart(id);
+						LevelStart(lights, id);
 					}
 				}
 			}
 		}
 
-		private static void LevelEnd(string level)
+		private static void LevelEnd(LightBoard lights, string level)
 		{
 			PlayAudio(@"..\..\..\NerfTargets\content\voice\" + level + "outro.wav");
+
+			if (level == "1") {
+				SetGenaralColor(lights, 50, 0, 0);
+			} else if (level == "2") {
+				SetGenaralColor(lights, 0, 30, 0);
+
+
+			}
 		}
+
 
 		private static void PlayAudio(string file)
 		{
@@ -121,9 +146,15 @@ myPlayer.Play();
 			//p1.Play();
 		}
 
-		private static void LevelStart(string level)
+		private static void LevelStart(LightBoard lights, string level)
 		{
 			PlayAudio(@"..\..\..\NerfTargets\content\voice\" + level + "intro.wav");
+
+			if (level == "1") {
+				SetGenaralColor(lights, 20, 20, 20);
+			} else if (level == "2") {
+				SetGenaralColor(lights, 0, 0, 20);
+			}
 		}
 
 		private static void RecordHit(LightBoard lights, string id)
@@ -140,6 +171,27 @@ myPlayer.Play();
 				Thread.Sleep(100);
 			}
 			lights.SetValue(channels, 0x00);
+
+		}
+
+		private static void SetGenaralColor(LightBoard lights, byte r, byte g, byte b) 
+		{
+			Action<int> setFixture = (chan) => {
+				lights[chan + 0] = 0;
+				lights[chan + 1] = 255;
+				lights[chan + 2] = 0;
+				for (int i = 0; i < 4; ++i) {
+
+					lights[chan + 3 + 3 * i] = r;
+					lights[chan + 3 + 3 * i + 1] = g;
+					lights[chan + 3 + 3 * i + 2] = b;
+				}
+			};
+
+			setFixture(278);
+			setFixture(293);
+
+			lights.SetValues();
 
 		}
 
