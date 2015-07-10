@@ -55,7 +55,8 @@ BODY {
 }
 
 #target.hidden {
-	display: none;
+	background-color: transparent;
+	transition: background-color 0.2s ease;
 }
 
 #target.selected {
@@ -63,9 +64,9 @@ BODY {
 	-webkit-filter: hue-rotate(90deg);*/
 	/*background-color: rgba(20,20,100,0.5);*/
 	/*border: 10px solid green;*/
-	-webkit-transition : -webkit-filter 0.2s linear;
+	/*-webkit-transition : -webkit-filter 0.2s linear;
 	filter: blur(18px);
- 	-webkit-filter: blur(18px);
+ 	-webkit-filter: blur(18px);*/
 }
 
 .overlay {
@@ -74,12 +75,12 @@ BODY {
 	height: 100%;
 	/*background-color: rgba(255,255,255,0);*/
 	background-color: rgba(147,201,80,0);
-	transition: background-color 0.2s ease;
+	/*transition: background-color 0.2s ease;*/
 
 }
 #target.selected .overlay {
 	/*background-color: rgba(255,255,255,1);*/
-	background-color: rgba(147,201,80,0.7);
+	background-color: rgba(147,201,80,1);
 }
 
 
