@@ -21,14 +21,12 @@
 			};
 
 			hub.client.showTarget = function() {
-				$('target').html("show target");
-			};
+				$('#text').text('Hit Me');
+			}
 
-			hub.client.hideTarget = function() {
-				$('target').html("");
-			};
-
-			hub.server.recordHit();
+			hub.client.hideTarget = function () {
+				$('#text').text('');
+			}
 
 			$.connection.hub.start();
 		});
