@@ -48,8 +48,6 @@ BODY {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./Content/images/game_over.jpg', sizingMethod='scale');
-	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./Content/images/game_over.jpg', sizingMethod='scale')";
 	background-image: url("../Content/images/game_over.jpg");
 	
 }
@@ -64,10 +62,15 @@ BODY {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./Content/images/target_archery.svg', sizingMethod='scale');
-	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./Content/images/target_archery.svg', sizingMethod='scale')";
 	background-image: url("../Content/images/target_archery.png");
-	
+}
+
+#target.chain {
+	background-image: url("../Content/images/chain.jpg");
+}
+
+#target.asteroid {
+	background-image: url("../Content/images/asteroid.jpg");
 }
 
 .hidden {
@@ -87,17 +90,14 @@ BODY {
 }
 
 .overlay {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	/*background-color: rgba(255,255,255,0);*/
-	background-color: rgba(147,201,80,0);
-	/*transition: background-color 0.2s ease;*/
-
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(54,156,48,0);
 }
-#target.selected .overlay {
-	/*background-color: rgba(255,255,255,1);*/
-	background-color: rgba(147,201,80,1);
+
+.target.selected .overlay {
+    background-color: rgba(54,156,48,0.9);
 }
 
 
