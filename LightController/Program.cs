@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Threading;
 using basic_light_board;
 using Microsoft.AspNet.SignalR.Client;
@@ -54,29 +55,43 @@ namespace LightController
 					if (success)
 						RecordHit(lights, t);
 				});
+				targetProxy.On<string>("LevelStart", LevelStart);
 
 
 				var allLights = Enumerable.Range(1, 10).Select(t => t.ToString()).ToList();
 
-				Console.WriteLine("All lights on");
-				allLights.ForEach(l => ShowTarget(lights, l));
-				Console.ReadKey();
-				allLights.ForEach(l => HideTarget(lights, l));
-				
-				foreach (var target in allLights)
+				while (true)
 				{
-					ShowTarget(lights, target);
-					Console.ReadKey();
-					HideTarget(lights, target);
-				}
+					var command = Console.ReadLine();
+					if (command == null)
+						continue;
 
-				Console.WriteLine("Press enter to exit");
-				Console.ReadKey();
+					if (command == "quit")
+						break;
+
+					if (command.StartsWith("hit"))
+					{
+						var id = command.Substring("hit".Length + 1);
+						RecordHit(lights, id);
+					}
+
+					if (command.StartsWith("level"))
+					{
+						var id = command.Substring("level".Length + 1);
+						LevelStart(id);
+					}
+				}
 			}
+		}
+
+		private static void LevelStart(string level)
+		{
+			(new SoundPlayer(@"music\" + level + ".wav")).Play();
 		}
 
 		private static void RecordHit(LightBoard lights, string id)
 		{
+			(new SoundPlayer(@"sounds\hit.wav")).Play();
 			var channels = GetChannelsForTarget(id);
 
 			for (int i = 0; i < 3; ++i)
