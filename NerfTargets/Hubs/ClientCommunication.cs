@@ -61,7 +61,7 @@ namespace NerfTargets.Hubs
 				{
 					var timer = new Timer();
 					timer.Elapsed += (sender, args) => HideTarget(idKvp.Key);
-						timer.Interval = delay.Value.Milliseconds;
+					timer.Interval = delay.Value.TotalMilliseconds;
 					timer.AutoReset = false;
 					timer.Start();
 				}
