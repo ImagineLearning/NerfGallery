@@ -78,7 +78,7 @@ namespace NerfTargets
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
 			foreach(var targetId in targetIds)
 			{
-				ClientCommunication.Instance.ShowTargetByTargetNum(targetId, -1);
+				ClientCommunication.Instance.ShowTargetByTargetNum(targetId);
 			}
 
 			while (hits < targetIds.Count)
