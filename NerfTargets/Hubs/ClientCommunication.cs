@@ -86,6 +86,7 @@ namespace NerfTargets.Hubs
 		public void RemoveClient(string connectionId)
 		{
 			_clients.Remove(connectionId);
+			_clientsNumbersByConnectionIds.Remove(connectionId);
 		}
 
 		public void SetClientId(string connectionId, int targetNumber)
