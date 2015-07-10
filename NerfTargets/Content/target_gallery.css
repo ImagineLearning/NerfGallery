@@ -1,0 +1,106 @@
+/* Reset
+oooooooooooooooooooooooooooooooooooooooooooooooooo */
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+*::-moz-focus-inner {
+	border: none; /* remove FF's dotted border when interacting with clickable items */
+}
+
+/* Font
+oooooooooooooooooooooooooooooooooooooooooooooooooo */
+/*@font-face {
+    font-family: 'Whitehall';
+    src: url('../fonts/whitehall.eot');
+    src: url('../fonts/whitehall.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/whitehall.ttf') format('truetype');
+}*/
+
+
+/* General
+oooooooooooooooooooooooooooooooooooooooooooooooooo */
+HTML {
+	/*height: 100%;*/
+}
+
+HTML , BODY {
+	/*min-height: 100%;*/
+}
+
+BODY {
+	-webkit-font-smoothing: antialiased;
+	-webkit-text-size-adjust: 100%;
+	/*/// Workaround for Mobile Chrome Bug caused by auto "font boosting." https://bugs.webkit.org/show_bug.cgi?id=84186 \\\*/
+	max-height: 999999px;
+}
+
+#target {
+	/*background-color: blue;*/
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: url(../Content/images/target_archery.svg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./Content/images/target_archery.svg', sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./Content/images/target_archery.svg', sizingMethod='scale')";
+	background-image: url("../Content/images/target_archery.png");
+	
+}
+
+#target.hidden {
+	display: none;
+}
+
+#target.selected {
+	/*filter: hue-rotate(90deg);
+	-webkit-filter: hue-rotate(90deg);*/
+	/*background-color: rgba(20,20,100,0.5);*/
+	/*border: 10px solid green;*/
+	-webkit-transition : -webkit-filter 0.2s linear;
+	filter: blur(18px);
+ 	-webkit-filter: blur(18px);
+}
+
+.overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	/*background-color: rgba(255,255,255,0);*/
+	background-color: rgba(147,201,80,0);
+	transition: background-color 0.2s ease;
+
+}
+#target.selected .overlay {
+	/*background-color: rgba(255,255,255,1);*/
+	background-color: rgba(147,201,80,0.7);
+}
+
+
+/* Development
+oooooooooooooooooooooooooooooooooooooooooooooooooo */
+.red_border {
+	border: 1px solid #F00;
+}
+
+/* Media Queries
+oooooooooooooooooooooooooooooooooooooooooooooooooo */
+@media screen and (max-width:1024px) {
+	
+}
+
+@media screen and (max-width:768px) {
+
+}
+
+@media screen and (max-width:600px) {
+
+}
+
+@media screen and (max-width:400px) {
+
+}

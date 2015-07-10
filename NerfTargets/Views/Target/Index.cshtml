@@ -1,9 +1,14 @@
-﻿<div id="text" style="font-size: 300px; text-align: center"></div>
+﻿<div id="target" class="hidden" onclick="tabletHit()">
+	<div class="overlay">
+	</div>
+</div>
+
+<div id="text" style="font-size: 300px; text-align: center"></div>
 <div id="debug"></div>
-<button id="testButton" onclick="tabletHit()">Test Hit</button>
 
 
 @section scripts {
+	<link rel="stylesheet" type="text/css" media="screen" href="~/Content/target_gallery.css" />
 	<!--Script references. -->
 	<!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
 	<!--Reference the SignalR library. -->
@@ -40,13 +45,20 @@
 
 			hub.client.showTarget = function(idNum) {
 				if (idNum === clientId) {
-					$('#text').text('Hit Me');
+					//$('#text').text('Hit Me');
+					$('#target').removeClass('hidden');
+					$('#target').removeClass('selected');
 				}
 			}
 
 			hub.client.hideTarget = function(idNum) {
 				if (idNum === clientId) {
-					$('#text').text('');
+					//$('#text').text('');
+					if ($('#target').hasClass('selected')) {
+						setTimeout(function() { $('#target').addClass('hidden'); }, 3000);
+					} else {
+						$('#target').addClass('hidden');
+					}
 				}
 			}
 
@@ -56,7 +68,9 @@
 
 			window.tabletHit = function() {
 				if (typeof hub !== 'undefined' && canSendHit) {
-					var goodHit = $('#text').text() == 'Hit Me';
+					var goodHit = !$('#target').hasClass('hidden');
+					$('#target').addClass('selected');
+					
 					hub.server.recordHit(goodHit);
 					canSendHit = false;
 					setTimeout(function() { canSendHit = true; }, 5000);
