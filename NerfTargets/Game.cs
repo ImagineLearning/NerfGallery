@@ -88,6 +88,7 @@ namespace NerfTargets
 			}
 
 			ClientCommunication.Instance.LevelEnd(levelName);
+			Thread.Sleep(TimeSpan.FromSeconds(8));
 		}
 
 		private void Part2()
@@ -95,8 +96,8 @@ namespace NerfTargets
 			var levelName = "part2";
 			ClientCommunication.Instance.RestartGame();
 			ClientCommunication.Instance.LevelStart(levelName);
+			Thread.Sleep(TimeSpan.FromSeconds(4));
 			Countdown(TimeSpan.FromSeconds(5));
-			Thread.Sleep(TimeSpan.FromSeconds(6));
 			int currentTargetNum = 0;
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
 			foreach (var targetId in targetIds.Take(2))
@@ -118,6 +119,8 @@ namespace NerfTargets
 			
 
 			ClientCommunication.Instance.LevelEnd(levelName);
+			Thread.Sleep(TimeSpan.FromSeconds(17));
+
 		}
 
 		private static void Countdown(TimeSpan time)
