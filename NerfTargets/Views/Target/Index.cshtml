@@ -18,6 +18,14 @@
 				$('#text').text(text);
 			};
 
+			hub.client.showTarget = function() {
+				$('#text').text('Hit Me');
+			}
+
+			hub.client.hideTarget = function () {
+				$('#text').text('');
+			}
+
 			$.connection.hub.start();
 		});
 	</script>
