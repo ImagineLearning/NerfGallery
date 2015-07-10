@@ -21,5 +21,10 @@ namespace NerfTargets.Hubs
 		{
 			ClientCommunication.Instance.RecordHit(Context.ConnectionId, good);
 		}
+
+		public void SetClientId(string id)
+		{
+			ClientCommunication.Instance.SetClientId(Context.ConnectionId, id);
+		}
 	}
 }

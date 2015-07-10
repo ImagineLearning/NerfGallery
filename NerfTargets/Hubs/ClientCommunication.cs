@@ -12,6 +12,7 @@ namespace NerfTargets.Hubs
 		private readonly IHubContext _targetHub;
 		private readonly Random _random = new Random();
 		private readonly List<string> _clients = new List<string>();
+		private readonly Dictionary<int, string> _clientsByClientId = new Dictionary<int, string>();
 
 		public event EventHandler GoodHit = (sender, args) => { };
 		public event EventHandler BadHit = (sender, args) => { };
@@ -63,6 +64,12 @@ namespace NerfTargets.Hubs
 		public void RemoveClient(string connectionId)
 		{
 			_clients.Remove(connectionId);
+		}
+
+		public void SetClientId(string connectionId, string clientId)
+		{
+			int id = int.Parse(clientId);
+			_clientsByClientId.Add(id, connectionId);
 		}
 
 		public void RecordHit(string connectionId, bool good)
