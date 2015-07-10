@@ -3,6 +3,7 @@
 	</div>
 </div>
 
+<div id="gameOver" class="hidden"></div>
 <div id="text" style="font-size: 300px; text-align: center"></div>
 <div id="ready">Ready</div>
 <div id="debug"></div>
@@ -36,7 +37,7 @@
 			$('#debug').text($('#debug').text() + text);
 		}
 
-		$(function() {
+		$(function () {
 			clientId = parseInt(getParameterByName('t'));
 			debug('client id: ' + clientId);
 			debug('sensitivity: ' + sensitivity);
@@ -64,7 +65,7 @@
 				}
 			}
 
-			hub.client.hideTarget = function(idNum) {
+			hub.client.hideTarget = function (idNum) {
 				if (idNum === clientId) {
 					//$('#text').text('');
 					if ($('#target').hasClass('selected')) {
@@ -75,18 +76,18 @@
 				}
 			}
 
-			$.connection.hub.start().done(function() {
+			$.connection.hub.start().done(function () {
 				hub.server.setClientId(clientId);
 			});
 
 			function startTimer() {
 				$('#ready').text("Not Ready");
-				timer = setTimeout(function() { canSendHit = true; $('#ready').text("Ready");}, quietTime);
+				timer = setTimeout(function () { canSendHit = true; $('#ready').text("Ready"); }, quietTime);
 			}
 
 			startTimer();
 
-			window.tabletHit = function() {
+			window.tabletHit = function () {
  				if (canSendHit) {
 				if (typeof hub !== 'undefined') {
 					var goodHit = !$('#target').hasClass('hidden');
@@ -105,7 +106,7 @@
 
 
 			if (window.DeviceMotionEvent != undefined) {
-				window.ondevicemotion = function(e) {
+				window.ondevicemotion = function (e) {
 
 					if (e.rotationRate) {
 						var alpha = e.rotationRate.alpha;

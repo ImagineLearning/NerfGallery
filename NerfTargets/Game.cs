@@ -61,7 +61,7 @@ namespace NerfTargets
 		{
 			ClientCommunication.Instance.LevelEnd();
 			ClientCommunication.Instance.HideAllTargets();
-			ClientCommunication.Instance.GameOver(hits, misses);
+			ClientCommunication.Instance.GameOver(hits);
 		}
 
 		private void PlayGame()

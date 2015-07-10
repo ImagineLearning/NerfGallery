@@ -164,6 +164,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\game_over.jpg" />
     <Content Include="Content\images\target_archery.png" />
     <Content Include="Content\images\target_archery.svg" />
     <Content Include="Content\target_gallery.css" />

@@ -30,6 +30,11 @@ namespace NerfTargets.Hubs
 			get { return _instance.Value; }
 		}
 
+		public void GameOver(int points)
+		{
+			_targetHub.Clients.All.gameOver(points);
+		}
+
 		public void ShowCountdown(string text)
 		{
 			_targetHub.Clients.All.showCountdown(text);
@@ -132,9 +137,5 @@ namespace NerfTargets.Hubs
 			_targetHub.Clients.All.levelEnd();
 		}
 
-		public void GameOver(int hits, int misses)
-		{
-			_targetHub.Clients.All.gameOver(hits, misses);
-		}
 	}
 }
