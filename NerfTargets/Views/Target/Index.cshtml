@@ -11,9 +11,10 @@
 	<script src="~/signalr/hubs"></script>
 	<!--SignalR script to update the chat page and send messages.-->
 	<script>
+		var hub;
 		$(function() {
 			// Reference the auto-generated proxy for the hub.
-			var hub = $.connection.targetHub;
+			hub = $.connection.targetHub;
 			// Create a function that the hub can call back to display messages.
 			hub.client.showText = function(text) {
 				// Add the message to the page.
@@ -24,7 +25,7 @@
 				$('#text').text('Hit Me');
 			}
 
-			hub.client.hideTarget = function () {
+			hub.client.hideTarget = function() {
 				$('#text').text('');
 			}
 
@@ -32,7 +33,10 @@
 		});
 
 		function tabletHit() {
-			hub.server.recordHit();
+			if (typeof hub !== 'undefined') {
+				var good = $('#text').text() == 'Hit Me';
+				hub.server.recordHit(good);
+			}
 		}
 	</script>
 }
