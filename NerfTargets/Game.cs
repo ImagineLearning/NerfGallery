@@ -14,12 +14,6 @@ namespace NerfTargets
 		readonly static Lazy<Game> _instance = new Lazy<Game>(() => new Game());
 		private IHubContext _scoreHub;
 
-		private static readonly Dictionary<string, string> TargetsForLevel = new Dictionary<string, string>()
-		{
-			{"part1", "chain"},
-			{"part2", "asteroid"}
-		}; 
-
 		public int hits = 0;
 		public int misses = 0;
 		public Game()
@@ -77,7 +71,7 @@ namespace NerfTargets
 		private void Part1()
 		{
 			var levelName = "part1";
-			ClientCommunication.Instance.RestartGame(TargetsForLevel[levelName]);
+			ClientCommunication.Instance.RestartGame();
 			ClientCommunication.Instance.LevelStart(levelName);
 			Thread.Sleep(TimeSpan.FromSeconds(6));
 			Countdown(TimeSpan.FromSeconds(5));
@@ -99,7 +93,7 @@ namespace NerfTargets
 		private void Part2()
 		{
 			var levelName = "part2";
-			ClientCommunication.Instance.RestartGame(TargetsForLevel[levelName]);
+			ClientCommunication.Instance.RestartGame();
 			ClientCommunication.Instance.LevelStart(levelName);
 			Countdown(TimeSpan.FromSeconds(5));
 			Thread.Sleep(TimeSpan.FromSeconds(6));
