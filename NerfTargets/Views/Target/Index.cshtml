@@ -3,6 +3,7 @@
 	</div>
 </div>
 
+<div id="gameOver" class="hidden"></div>
 <div id="text" style="font-size: 300px; text-align: center"></div>
 <div id="ready">Ready</div>
 <div id="debug"></div>
@@ -49,6 +50,11 @@
 				// Add the message to the page.
 				$('#text').text(text);
 			};
+
+			hub.client.gameOver = function(points) {
+				$('#gameOver').removeClass('hidden');
+				debug('game over. Points: ' + points);
+			}
 
 			hub.client.showTarget = function(idNum) {
 				if (idNum === clientId) {

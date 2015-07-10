@@ -30,6 +30,11 @@ namespace NerfTargets.Hubs
 			get { return _instance.Value; }
 		}
 
+		public void GameOver(int points)
+		{
+			_targetHub.Clients.All.gameOver(points);
+		}
+
 		public void ShowText(string text)
 		{
 			_targetHub.Clients.All.showText(text);

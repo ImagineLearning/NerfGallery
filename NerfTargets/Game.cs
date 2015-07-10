@@ -60,7 +60,7 @@ namespace NerfTargets
 		private void GameOver()
 		{
 			ClientCommunication.Instance.HideAllTargets();
-			ClientCommunication.Instance.ShowText("Game Over");
+			ClientCommunication.Instance.GameOver(hits);
 		}
 
 		private void PlayGame()
