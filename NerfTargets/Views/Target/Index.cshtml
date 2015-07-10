@@ -62,7 +62,7 @@
 				if (idNum === clientId) {
 					//$('#text').text('');
 					if ($('#target').hasClass('selected')) {
-						setTimeout(function() { $('#target').addClass('hidden'); }, 3000);
+						setTimeout(function () { $('#target').removeClass('selected'); $('#target').addClass('hidden'); }, 3000);
 					} else {
 						$('#target').addClass('hidden');
 					}
