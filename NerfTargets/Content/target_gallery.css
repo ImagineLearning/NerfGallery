@@ -64,15 +64,15 @@ BODY {
 	background-size: cover;
 }
 
-#target.chain {
+#target.part1 {
 	background-image: url("../Content/images/chain.jpg");
 }
 
-#target.chain.selected {
+#target.part1.selected {
 	background-image: url("../Content/images/chain_broken.jpg");
 }
 
-#target.asteroid {
+#target.part2 {
 	background-image: url("../Content/images/asteroid.jpg");
 }
 
