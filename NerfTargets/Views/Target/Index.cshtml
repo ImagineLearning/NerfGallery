@@ -1,6 +1,7 @@
 ﻿<div id="text" style="font-size: 300px; text-align: center"></div>
-<div id="target"></div>
+<div id="debug"></div>
 <button id="testButton" onclick="tabletHit()">Test Hit</button>
+
 
 @section scripts {
 	<!--Script references. -->
@@ -12,6 +13,7 @@
 	<!--SignalR script to update the chat page and send messages.-->
 	<script>
 		var hub;
+		var canSendHit = true;
 		$(function() {
 			// Reference the auto-generated proxy for the hub.
 			hub = $.connection.targetHub;
@@ -33,9 +35,28 @@
 		});
 
 		function tabletHit() {
-			if (typeof hub !== 'undefined') {
-				var good = $('#text').text() == 'Hit Me';
-				hub.server.recordHit(good);
+			if (typeof hub !== 'undefined' && canSendHit) {
+				var goodHit = $('#text').text() == 'Hit Me';
+				hub.server.recordHit(goodHit);
+				canSendHit = false;
+				setTimeout(function () { canSendHit = true; }, 5000);
+				$('#debug').text($('#debug').text() + 'sent hit ' + (goodHit ? '[good]' : '[bad]'));
+			}
+		}
+
+		if (window.DeviceMotionEvent != undefined) {
+			window.ondevicemotion = function(e) {
+
+				if (e.rotationRate) {
+					var alpha = e.rotationRate.alpha;
+					var beta = e.rotationRate.beta;
+					var gamma = e.rotationRate.gamma;
+
+					if (Math.abs(alpha) > 1 || Math.abs(beta) > 1 || Math.abs(gamma) > 1) {
+						tabletHit();
+						
+					}
+				}
 			}
 		}
 	</script>
