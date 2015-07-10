@@ -35,6 +35,27 @@ namespace NerfTargets.Hubs
 			_targetHub.Clients.All.showText(text);
 		}
 
+		public List<int> GetConnectedTargetIds()
+		{
+			var ids = _clientsNumbersByConnectionIds.Select(kvp => kvp.Value).ToList();
+			ids.Sort();
+			return ids;
+		}
+
+		public void ShowTargetByTargetNum(int targetNum, int delaySeconds = 5)
+		{
+			var idKvp = _clientsNumbersByConnectionIds.FirstOrDefault(c => c.Value == targetNum);
+			if (!string.IsNullOrEmpty(idKvp.Key))
+			{
+				ShowTarget(idKvp.Key);
+				var timer = new Timer();
+				timer.Elapsed += (sender, args) => HideTarget(idKvp.Key);
+				timer.Interval = delaySeconds * 1000;
+				timer.AutoReset = false;
+				timer.Start();
+			}
+		}
+
 
 		public void ShowRandomTarget(int delay)
 		{
@@ -69,7 +90,7 @@ namespace NerfTargets.Hubs
 
 		public void SetClientId(string connectionId, int targetNumber)
 		{
-			_clientsNumbersByConnectionIds.Add(connectionId, targetNumber);
+			_clientsNumbersByConnectionIds[connectionId] = targetNumber;
 		}
 
 		public void RecordHit(string connectionId, bool good)

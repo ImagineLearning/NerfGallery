@@ -53,7 +53,7 @@ namespace NerfTargets
 		private void GameThread()
 		{
 			Countdown(TimeSpan.FromSeconds(5));
-			PlayGame(TimeSpan.FromSeconds(30));
+			PlayGame();
 			GameOver();
 		}
 
@@ -63,16 +63,16 @@ namespace NerfTargets
 			ClientCommunication.Instance.ShowText("Game Over");
 		}
 
-		private void PlayGame(TimeSpan gameLength)
+		private void PlayGame()
 		{
-			DateTime gameStart = DateTime.Now;
-			while (DateTime.Now  - gameStart < gameLength)
+			int currentTargetNum = 0;
+			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
+			foreach(var targetId in targetIds)
 			{
-				ShowNewTarget();
-				Thread.Sleep(500);
-				ShowNewTarget();
+				ClientCommunication.Instance.ShowTargetByTargetNum(targetId);
 
-				Thread.Sleep(TimeSpan.FromSeconds(5));
+				Thread.Sleep(TimeSpan.FromSeconds(7));
+				currentTargetNum++;
 			}
 		}
 
