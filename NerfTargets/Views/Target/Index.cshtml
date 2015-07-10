@@ -62,7 +62,8 @@
 				$('#gameOver').addClass('hidden');
 			}
 
-			hub.client.levelStart = function(targetClass) {
+			hub.client.levelStart = function (targetClass) {
+				$('#target').addClass('hidden');
 				$('#target').removeClass(targetClassName);
 				targetClassName = targetClass;
 				$('#target').addClass(targetClassName);

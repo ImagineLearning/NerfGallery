@@ -82,15 +82,6 @@ BODY {
 	transition: background-color .5s ease;
 }
 
-#target.selected {
-	/*filter: hue-rotate(90deg);
-	-webkit-filter: hue-rotate(90deg);*/
-	/*background-color: rgba(20,20,100,0.5);*/
-	/*border: 10px solid green;*/
-	/*-webkit-transition : -webkit-filter 0.2s linear;
-	filter: blur(18px);
- 	-webkit-filter: blur(18px);*/
-}
 
 .overlay {
     position: fixed;
@@ -99,7 +90,7 @@ BODY {
     background-color: rgba(54,156,48,0);
 }
 
-.target.selected .overlay {
+#target.selected .overlay {
     background-color: rgba(54,156,48,0.9);
 }
 
