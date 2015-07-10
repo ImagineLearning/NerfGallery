@@ -61,7 +61,7 @@ namespace NerfTargets.Hubs
 				{
 					var timer = new Timer();
 					timer.Elapsed += (sender, args) => HideTarget(idKvp.Key);
-					timer.Interval = delay.Value.Milliseconds;
+					timer.Interval = delay.Value.TotalMilliseconds;
 					timer.AutoReset = false;
 					timer.Start();
 				}
@@ -124,14 +124,20 @@ namespace NerfTargets.Hubs
 
 		private void ShowTarget(string clientId)
 		{
+			if (_clientsNumbersByConnectionIds.ContainsKey(clientId))
+			{
 			_clientsShowingTarget.Add(clientId);
 			_targetHub.Clients.All.showTarget(_clientsNumbersByConnectionIds[clientId]);
+		}
 		}
 
 		private void HideTarget(string clientId)
 		{
+			if (_clientsNumbersByConnectionIds.ContainsKey(clientId))
+			{
 			_clientsShowingTarget.Remove(clientId);
 			_targetHub.Clients.All.hideTarget(_clientsNumbersByConnectionIds[clientId]);
+		}
 		}
 
 		public void LevelStart(string name)
