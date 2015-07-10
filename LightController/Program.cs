@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Threading;
@@ -41,7 +42,16 @@ namespace LightController
 	{
 		static void Main(string[] args)
 		{
-			var hubConnection = new HubConnection("http://nerf.azurewebsites.net/");
+			HubConnection hubConnection;
+			if (Debugger.IsAttached)
+			{
+				hubConnection = new HubConnection("http://localhost:11796/");
+			}
+			else
+			{
+				hubConnection = new HubConnection("http://nerf.azurewebsites.net/");				
+			}
+
 			IHubProxy targetProxy = hubConnection.CreateHubProxy("TargetHub");
 
 			hubConnection.Start();

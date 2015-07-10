@@ -52,10 +52,10 @@
 			};
 
 			// Create a function that the hub can call back to display messages.
-			hub.client.gameOver = function (hits, misses) {
-				// Add the message to the page.
-				$('#text').text(hits);
-			};
+			hub.client.gameOver = function (points) {
+				$('#gameOver').removeClass('hidden');
+				debug('game over. Points: ' + points);
+			}
 
 			hub.client.showTarget = function(idNum) {
 				if (idNum === clientId) {
