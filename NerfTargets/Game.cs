@@ -59,6 +59,7 @@ namespace NerfTargets
 
 		private void GameThread()
 		{
+			ClientCommunication.Instance.RestartGame();
 			Countdown(TimeSpan.FromSeconds(5));
 			PlayGame();
 			GameOver();
@@ -76,8 +77,8 @@ namespace NerfTargets
 		private void PlayGame()
 		{
 			var levelName = "part1";
-			ClientCommunication.Instance.RestartGame(TargetsForLevel[levelName]);
-			ClientCommunication.Instance.LevelStart(levelName);
+
+			ClientCommunication.Instance.LevelStart(TargetsForLevel[levelName]);
 			int currentTargetNum = 0;
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
 			foreach(var targetId in targetIds)
