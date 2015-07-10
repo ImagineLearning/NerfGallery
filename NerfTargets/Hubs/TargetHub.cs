@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.AspNet.SignalR;
@@ -8,7 +9,7 @@ namespace NerfTargets.Hubs
 {
 	public class TargetHub : Hub
 	{
-		
+
 		public override Task OnConnected()
 		{
 			ClientCommunication.Instance.AddClient(Context.ConnectionId);
@@ -36,34 +37,45 @@ namespace NerfTargets.Hubs
 		private readonly List<string> _clients = new List<string>();
 
 		public event EventHandler GoodHit = (sender, args) => { };
-		public event EventHandler BadHit = (sender, args) => { }; 
+		public event EventHandler BadHit = (sender, args) => { };
 
 		public ClientCommunication()
 		{
 			_targetHub = GlobalHost.ConnectionManager.GetHubContext<TargetHub>();
-			
+
 		}
-		public static ClientCommunication Instance { get { return _instance.Value; } }
+
+		public static ClientCommunication Instance
+		{
+			get { return _instance.Value; }
+		}
 
 		public void ShowText(string text)
 		{
 			_targetHub.Clients.All.showText(text);
 		}
 
+		private readonly HashSet<string> _clientsShowingTarget = new HashSet<string>();
+
 		public void ShowRandomTarget(int delay)
 		{
-			var target = _clients[_random.Next(_clients.Count - 1)];
-			_targetHub.Clients.Client(target).showTarget();
-			var timer = new Timer();
-			timer.Elapsed += (sender, args) => _targetHub.Clients.Client(target).hideTarget();
-			timer.Interval = delay*1000;
-			timer.AutoReset = false;
-			timer.Start();
+			var eligibleClients = _clients.Except(_clientsShowingTarget).ToList();
+			if (eligibleClients.Any())
+			{
+				var randomTarget = eligibleClients.Skip(_random.Next(0, eligibleClients.Count - 1)).First();
+				ShowTarget(randomTarget);
+				var timer = new Timer();
+				timer.Elapsed += (sender, args) => HideTarget(randomTarget);
+				timer.Interval = delay*1000;
+				timer.AutoReset = false;
+				timer.Start();
+			}
 		}
 
 		public void HideAllTargets()
 		{
 			_targetHub.Clients.All.hideTarget();
+			_clientsShowingTarget.Clear();
 		}
 
 		public void AddClient(string connectionId)
@@ -81,11 +93,25 @@ namespace NerfTargets.Hubs
 			if (good)
 			{
 				GoodHit(this, EventArgs.Empty);
+				HideTarget(connectionId);
 			}
 			else
 			{
 				BadHit(this, EventArgs.Empty);
 			}
+		}
+
+
+		private void ShowTarget(string clientId)
+		{
+			_clientsShowingTarget.Add(clientId);
+			_targetHub.Clients.Client(clientId).showTarget();
+		}
+
+		private void HideTarget(string clientId)
+		{
+			_clientsShowingTarget.Remove(clientId);
+			_targetHub.Clients.Client(clientId).hideTarget();
 		}
 	}
 }

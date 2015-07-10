@@ -12,13 +12,30 @@ namespace NerfTargets
 
 		public Game()
 		{
+			ClientCommunication.Instance.GoodHit += (sender, args) => ShowNewTarget();
+		}
 
+		private void ShowNewTarget()
+		{
+			ClientCommunication.Instance.ShowRandomTarget(3);
 		}
 
 		public void Start()
 		{
-			StartCountdown(TimeSpan.FromSeconds(5))
-				.ContinueWith(o => PlayGame(TimeSpan.FromSeconds(30)));
+			Task.Run(() => GameThread());
+		}
+
+		private void GameThread()
+		{
+			Countdown(TimeSpan.FromSeconds(5));
+			PlayGame(TimeSpan.FromSeconds(30));
+			GameOver();
+		}
+
+		private void GameOver()
+		{
+			ClientCommunication.Instance.HideAllTargets();
+			ClientCommunication.Instance.ShowText("Game Over");
 		}
 
 		private void PlayGame(TimeSpan gameLength)
@@ -26,17 +43,16 @@ namespace NerfTargets
 			DateTime gameStart = DateTime.Now;
 			while (DateTime.Now  - gameStart < gameLength)
 			{
-				ClientCommunication.Instance.ShowRandomTarget(3);
+				ShowNewTarget();
+				Thread.Sleep(500);
+				ShowNewTarget();
 
 				Thread.Sleep(TimeSpan.FromSeconds(5));
-
 			}
 		}
 
-		private static Task<object> StartCountdown(TimeSpan time)
+		private static void Countdown(TimeSpan time)
 		{
-			var tcs = new TaskCompletionSource<object>();
-
 			int countdown = time.Seconds;
 			var timer = new Timer();
 			timer.Elapsed += (sender, args) =>
@@ -45,7 +61,6 @@ namespace NerfTargets
 				{
 					ClientCommunication.Instance.ShowText("");
 					timer.Stop();
-					tcs.SetResult(new object());
 				}
 				else
 				{
@@ -56,7 +71,10 @@ namespace NerfTargets
 			timer.Interval = 1000;
 			timer.Start();
 
-			return tcs.Task;
+			while (timer.Enabled)
+			{
+				Thread.Sleep(100);
+			}
 		}
 
 		public static Game Instance
