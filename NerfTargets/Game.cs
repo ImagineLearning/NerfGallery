@@ -52,6 +52,7 @@ namespace NerfTargets
 
 		private void GameThread()
 		{
+			ClientCommunication.Instance.RestartGame();
 			ClientCommunication.Instance.LevelStart("part1");
 			Countdown(TimeSpan.FromSeconds(3));
 			PlayGame();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Threading;
@@ -102,24 +103,32 @@ namespace LightController
 
 		private static void LevelEnd(string level)
 		{
-			PlayAudio(@"..\..\music\" + level + "_outro.wav");
+			PlayAudio(@"..\..\..\NerfTargets\content\voice\" + level + "outro.wav");
 		}
 
 		private static void PlayAudio(string file)
 		{
-			var p1 = new System.Windows.Media.MediaPlayer();
-			p1.Open(new System.Uri(file));
-			p1.Play();
+			file = Path.Combine(Environment.CurrentDirectory, file);
+
+			System.Media.SoundPlayer myPlayer = new System.Media.SoundPlayer();
+myPlayer.SoundLocation = file;
+myPlayer.Play();
+
+			//file = Path.Combine(Environment.CurrentDirectory, file);
+			//Console.WriteLine("Playing Audio " + file);
+			//var p1 = new System.Windows.Media.MediaPlayer();
+			//p1.Open(new System.Uri(file));
+			//p1.Play();
 		}
 
 		private static void LevelStart(string level)
 		{
-			PlayAudio(@"..\..\music\" + level + "_into.wav");
+			PlayAudio(@"..\..\..\NerfTargets\content\voice\" + level + "intro.wav");
 		}
 
 		private static void RecordHit(LightBoard lights, string id)
 		{
-			PlayAudio(@"..\..\sounds\hit.mp3");
+			PlayAudio(@"..\..\..\NerfTargets\content\sounds\hit.wav");
 
 			var channels = GetChannelsForTarget(id);
 

@@ -57,7 +57,12 @@
 				debug('game over. Points: ' + points);
 			}
 
-			hub.client.showTarget = function(idNum) {
+			hub.client.restartGame = function() {
+				$('#gameOver').addClass('hidden');
+				debug('game restarted');
+			}
+
+			hub.client.showTarget = function (idNum) {
 				if (idNum === clientId) {
 					//$('#text').text('Hit Me');
 					$('#target').removeClass('hidden');
@@ -88,16 +93,16 @@
 			startTimer();
 
 			window.tabletHit = function () {
- 				if (canSendHit) {
-				if (typeof hub !== 'undefined') {
-					var goodHit = !$('#target').hasClass('hidden');
-					$('#target').addClass('selected');
-					
-					hub.server.recordHit(goodHit);
-					canSendHit = false;
+				if (canSendHit) {
+					if (typeof hub !== 'undefined') {
+						var goodHit = !$('#target').hasClass('hidden');
+						$('#target').addClass('selected');
+
+						hub.server.recordHit(goodHit);
+						canSendHit = false;
 						startTimer();
-					debug('sent hit ' + (goodHit ? '[good]' : '[bad]'));
-				}
+						debug('sent hit ' + (goodHit ? '[good]' : '[bad]'));
+					}
 				} else {
 					clearTimeout(timer);
 					startTimer();
