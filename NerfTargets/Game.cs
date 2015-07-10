@@ -99,7 +99,7 @@ namespace NerfTargets
 			Countdown(TimeSpan.FromSeconds(3));
 
 			var targetIds = ClientCommunication.Instance.GetConnectedTargetIds();
-			foreach (var targetId in targetIds.Take(2))
+			foreach (var targetId in targetIds.Take(2).Randomize())
 			{
 				ClientCommunication.Instance.ShowTargetByTargetNum(targetId, TimeSpan.FromSeconds(10));
 				Thread.Sleep(1000);
@@ -108,13 +108,32 @@ namespace NerfTargets
 			Thread.Sleep(TimeSpan.FromSeconds(10));
 			ClientCommunication.Instance.HideAllTargets();
 
-			foreach (var targetId in targetIds.Skip(2).Take(3))
+			foreach (var targetId in targetIds.Skip(2).Take(3).Randomize())
 			{
 				ClientCommunication.Instance.ShowTargetByTargetNum(targetId, TimeSpan.FromSeconds(10));
 				Thread.Sleep(1000);
 			}
 
 			Thread.Sleep(TimeSpan.FromSeconds(10));
+
+			foreach (var targetId in targetIds.Skip(5).Take(3).Randomize())
+			{
+				ClientCommunication.Instance.ShowTargetByTargetNum(targetId, TimeSpan.FromSeconds(10));
+				Thread.Sleep(1000);
+			}
+
+			Thread.Sleep(TimeSpan.FromSeconds(10));
+
+
+			foreach (var targetId in targetIds.Skip(8).Take(2).Randomize())
+			{
+				ClientCommunication.Instance.ShowTargetByTargetNum(targetId, TimeSpan.FromSeconds(10));
+				Thread.Sleep(1000);
+			}
+
+			Thread.Sleep(TimeSpan.FromSeconds(10));
+
+
 			ClientCommunication.Instance.HideAllTargets();
 
 			ClientCommunication.Instance.LevelEnd(levelName);
@@ -151,6 +170,21 @@ namespace NerfTargets
 		public static Game Instance
 		{
 			get { return _instance.Value; }
+		}
+	}
+
+	public static class Extensions
+	{
+		public static IEnumerable<T> Randomize<T>(this IEnumerable<T> list)
+		{
+			var random = new Random();
+			var newList = new List<T>(list.ToList());
+			while (newList.Any())
+			{
+				T item = newList[random.Next(newList.Count - 1)];
+				newList.Remove(item);
+				yield return item;
+			}
 		}
 	}
 }
