@@ -38,6 +38,22 @@ BODY {
 	color: white;
 }
 
+#gameOver {
+	/*background-color: blue;*/
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: url(../Content/images/game_over.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./Content/images/game_over.jpg', sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./Content/images/game_over.jpg', sizingMethod='scale')";
+	background-image: url("../Content/images/game_over.jpg");
+	
+}
+
 #target {
 	/*background-color: blue;*/
 	position: fixed;
@@ -54,9 +70,10 @@ BODY {
 	
 }
 
-#target.hidden {
+.hidden {
 	background-color: transparent;
-	transition: background-color 0.2s ease;
+	-webkit-transition: background-color .5s ease;
+	transition: background-color .5s ease;
 }
 
 #target.selected {
