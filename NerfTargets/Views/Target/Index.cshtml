@@ -1,4 +1,6 @@
 ﻿<div id="text" style="font-size: 300px; text-align: center"></div>
+<div id="target"></div>
+<button id="testButton" onclick="tabletHit()">Test Hit</button>
 
 @section scripts {
 	<!--Script references. -->
@@ -18,7 +20,21 @@
 				$('#text').text(text);
 			};
 
+			hub.client.showTarget = function() {
+				$('target').html("show target");
+			};
+
+			hub.client.hideTarget = function() {
+				$('target').html("");
+			};
+
+			hub.server.recordHit();
+
 			$.connection.hub.start();
 		});
+
+		function tabletHit() {
+			hub.server.recordHit();
+		}
 	</script>
 }
