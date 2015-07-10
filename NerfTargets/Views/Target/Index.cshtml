@@ -14,7 +14,22 @@
 	<script>
 		var hub;
 		var canSendHit = true;
-		$(function() {
+		var clientId;
+
+		function getParameterByName(name) {
+			name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+			var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+				results = regex.exec(location.search);
+			return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+
+		function debug(text) {
+			$('#debug').text($('#debug').text() + text);
+		}
+
+		$(function () {
+			clientId = getParameterByName('t');
+			debug('client id: ' + clientId);
 			// Reference the auto-generated proxy for the hub.
 			hub = $.connection.targetHub;
 			// Create a function that the hub can call back to display messages.
@@ -32,32 +47,36 @@
 			}
 
 			$.connection.hub.start();
-		});
 
-		function tabletHit() {
-			if (typeof hub !== 'undefined' && canSendHit) {
-				var goodHit = $('#text').text() == 'Hit Me';
-				hub.server.recordHit(goodHit);
-				canSendHit = false;
-				setTimeout(function () { canSendHit = true; }, 5000);
-				$('#debug').text($('#debug').text() + 'sent hit ' + (goodHit ? '[good]' : '[bad]'));
+			window.tabletHit = function() {
+				if (typeof hub !== 'undefined' && canSendHit) {
+					var goodHit = $('#text').text() == 'Hit Me';
+					hub.server.recordHit(goodHit);
+					canSendHit = false;
+					setTimeout(function () { canSendHit = true; }, 5000);
+					debug( 'sent hit ' + (goodHit ? '[good]' : '[bad]'));
+				}
 			}
-		}
 
-		if (window.DeviceMotionEvent != undefined) {
-			window.ondevicemotion = function(e) {
+			
 
-				if (e.rotationRate) {
-					var alpha = e.rotationRate.alpha;
-					var beta = e.rotationRate.beta;
-					var gamma = e.rotationRate.gamma;
+			if (window.DeviceMotionEvent != undefined) {
+				window.ondevicemotion = function (e) {
 
-					if (Math.abs(alpha) > 1 || Math.abs(beta) > 1 || Math.abs(gamma) > 1) {
-						tabletHit();
-						
+					if (e.rotationRate) {
+						var alpha = e.rotationRate.alpha;
+						var beta = e.rotationRate.beta;
+						var gamma = e.rotationRate.gamma;
+
+						if (Math.abs(alpha) > 1 || Math.abs(beta) > 1 || Math.abs(gamma) > 1) {
+							tabletHit();
+
+						}
 					}
 				}
 			}
-		}
+		});
+
+		
 	</script>
 }
