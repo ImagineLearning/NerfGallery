@@ -55,11 +55,11 @@ namespace LightController
 		static void Main(string[] args)
 		{
 			HubConnection hubConnection;
-			if (Debugger.IsAttached)
+			//if (Debugger.IsAttached)
 			{
-				hubConnection = new HubConnection("http://localhost:11796/");
+		//		hubConnection = new HubConnection("http://localhost:11796/");
 			}
-			else
+		//	else
 			{
 				hubConnection = new HubConnection("http://nerf.azurewebsites.net/");				
 			}
@@ -121,9 +121,9 @@ namespace LightController
 		{
 			PlayAudio(@"..\..\..\NerfTargets\content\voice\" + level + "outro.wav");
 
-			if (level == "1") {
+			if (level == "part1") {
 				SetGenaralColor(lights, 50, 0, 0);
-			} else if (level == "2") {
+			} else if (level == "part2") {
 				SetGenaralColor(lights, 0, 30, 0);
 
 
@@ -133,13 +133,15 @@ namespace LightController
 
 		private static void PlayAudio(string file)
 		{
+			Console.WriteLine("Playing audio " + file);
+
 			file = Path.Combine(Environment.CurrentDirectory, file);
 
-//			System.Media.SoundPlayer myPlayer = new System.Media.SoundPlayer();
-//myPlayer.SoundLocation = file;
-//myPlayer.Play();
-			var musicplayer = new MusicPlayer(file);
-			musicplayer.Play(false);
+			System.Media.SoundPlayer myPlayer = new System.Media.SoundPlayer();
+			myPlayer.SoundLocation = file;
+			myPlayer.Play();
+			//var musicplayer = new MusicPlayer(file);
+			//musicplayer.Play(false);
 
 			//file = Path.Combine(Environment.CurrentDirectory, file);
 			//Console.WriteLine("Playing Audio " + file);
@@ -152,9 +154,9 @@ namespace LightController
 		{
 			PlayAudio(@"..\..\..\NerfTargets\content\voice\" + level + "intro.wav");
 
-			if (level == "1") {
+			if (level == "part1") {
 				SetGenaralColor(lights, 20, 20, 20);
-			} else if (level == "2") {
+			} else if (level == "part2") {
 				SetGenaralColor(lights, 0, 0, 20);
 			}
 		}

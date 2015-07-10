@@ -6,7 +6,7 @@
 <div id="gameOver" class="hidden"></div>
 <div id="text" style="font-size: 300px; text-align: center"></div>
 <div id="ready">Ready</div>
-<div id="debug"></div>
+<div id="debug" style="display: none"></div>
 
 
 @section scripts {
@@ -90,6 +90,10 @@
 			}
 
 			$.connection.hub.start().done(function () {
+				hub.server.setClientId(clientId);
+			});
+
+			$.connection.hub.reconnected(function () {
 				hub.server.setClientId(clientId);
 			});
 

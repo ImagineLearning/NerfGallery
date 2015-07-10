@@ -16,6 +16,8 @@ namespace NerfTargets
 
 		public int hits = 0;
 		public int misses = 0;
+		private Thread _thread;
+
 		public Game()
 		{
 			ClientCommunication.Instance.GoodHit += (sender, args) =>
@@ -48,7 +50,13 @@ namespace NerfTargets
 			misses = 0;
 			UpdateScores();
 
-			Task.Run(() => GameThread());
+			if (_thread != null)
+			{
+				_thread.Abort();
+			}
+
+			_thread = new Thread(GameThread);
+			_thread.Start();
 		}
 
 		private void GameThread()
@@ -60,7 +68,6 @@ namespace NerfTargets
 
 		private void GameOver()
 		{
-			ClientCommunication.Instance.LevelEnd("part1");
 			ClientCommunication.Instance.HideAllTargets();
 			ClientCommunication.Instance.GameOver(hits);
 		}
@@ -137,7 +144,6 @@ namespace NerfTargets
 			ClientCommunication.Instance.HideAllTargets();
 
 			ClientCommunication.Instance.LevelEnd(levelName);
-			Thread.Sleep(TimeSpan.FromSeconds(17));
 
 		}
 
